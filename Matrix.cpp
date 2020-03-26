@@ -4,56 +4,104 @@
 * Purpose: Multiply matrices together and test the speed
 * at which the multiplication runs with differing thread
 * counts.
+*
+* Portions of code were taken (and adapted) from
+* https://www.geeksforgeeks.org/c-program-multiply-two-matrices/
+* (written by Aditya Ranjan)
 */
 #define _CRT_SECURE_NO_WARNINGS //iso standard is good for us
 //include statements
 #include<stdio.h> 
+#include<stdlib.h>
 
-
-const int m1 = 2, m2 = 2, n1 = 2, n2 = 2;
+//global variables
+//number of rows and columns for the 2 matrices
+const int row1 = 2, col1 = 2, row2 = 2, col2 = 2; 
 
 // method stubs
-void multiply(int m1, int m_2, int mat1[][m2],
-    int n1, int n_2, int mat2[][n2]);
+int * multiply(int m1, int m2, int *mat1,
+    int n1, int n2, int *mat2);
 
-// Driver code 
+
 int main() {
+    //variable dictionary:
+    int i,j,x;  //loop variables
+    int* mat1;  //first matrix (250000 x 3)
+    int* mat2;  //second matrix (3 x 7)
+    int* mat3;  //matrix resulting from mat1*mat2 (250000 x 7)
+
     //standard initial output
     printf("David Dray ~ COMP 233 B ~ Spring 2020\n");
     printf("Matrix - Multiply Matrices together and "
         "compare\nthe time different thread counts "
         "take to get the answer\n");
-    int mat1[][2] = { { 2, 4 }, { 3, 4 } };
-    int mat2[][2] = { { 1, 2 }, { 1, 3 } };
-    multiply(m1, m2, mat1, n1, n2, mat2);
+    mat1 = (int*)malloc(row1 * col1 * sizeof(int));
+    for (i = 0; i < row1; i++) {
+        for (j = 0; j < col1; j++) {
+            *(mat1 + i * col1 + j) = i+j;
+        }
+    }
+
+    mat2 = (int*)malloc(row2 * col2 * sizeof(int));
+    for (i = 0; i < row1; i++) {
+        for (j = 0; j < col2; j++) {
+            *(mat2 + i * col2 + j) = i+j;
+        }
+    }
+    printf("matrix1:\n");
+    for (i = 0; i < row1; i++)
+    {
+        for (j = 0; j < col2; j++)
+        {
+            printf("%d ", *(mat1 + i * col2 + j));
+        }
+        printf("\n");
+    }
+    printf("matrix2:\n");
+    for (i = 0; i < row1; i++)
+    {
+        for (j = 0; j < col2; j++)
+        {
+            printf("%d ", *(mat2 + i * col2 + j));
+        }
+        printf("\n");
+    }
+
+
+
+
+
+    mat3 = (int*)malloc(row1 * col2 * sizeof(int));
+    
+    mat3 = multiply(row1, col1, mat1, row2, col2, mat2);
+    printf("matrix2:\n");
+    for ( i = 0; i < row1; i++)
+    {
+        for (j = 0; j < col2; j++)
+        {
+            printf("%d ", *(mat3 + i * col2 + j));
+        }
+        printf("\n");
+    }
     return 0;
 
     printf("\n\n\t<<Normal Termination>>\n\n");
 
 }
 
-void multiply(int m_1, int m_2, int mat1[][m2],
-    int n1, int n_2, int mat2[][n2]) {
+int * multiply(int m1, int m2, int *mat1,
+    int n1, int n2, int *mat2) {
     int x, i, j;
-    int res[m1][n2];
-    for (i = 0; i < m1; i++)
-    {
-        for (j = 0; j < n2; j++)
-        {
-            res[i][j] = 0;
-            for (x = 0; x < m2; x++)
-            {
-                *(*(res + i) + j) += *(*(mat1 + i) + x) *
-                    *(*(mat2 + x) + j);
+    int * res = (int*)malloc(m1 * n2 * sizeof(int));
+    for (i = 0; i < m1; i++) {
+        for (j = 0; j < n2; j++) {
+
+            *(res+i*n2+j) = 0;
+            for (x = 0; x < m2; x++) {
+                *(res + i * n2 + j) += *(mat1 + i * n1 + x) *
+                    *(mat2 + x*n2 + j);
             }
         }
     }
-    for (i = 0; i < m1; i++)
-    {
-        for (j = 0; j < n2; j++)
-        {
-            printf("%d ", *(*(res + i) + j));
-        }
-        printf("\n");
-    }
+    return res;
 }
