@@ -44,31 +44,26 @@ int main() {
     }
 
     mat2 = (double*)malloc(row2 * col2 * sizeof(double));
-    for (i = 0; i < row1; i++) {
+    for (i = 0; i < row2; i++) {
         for (j = 0; j < col2; j++) {
             *(mat2 + i * col2 + j) = i+j;
         }
     }
+
     printf("matrix1:\n");
-    for (i = 0; i < row1; i++)
-    {
-        for (j = 0; j < col2; j++)
-        {
-            printf("%d ", *(mat1 + i * col2 + j));
+    for (i = 0; i < row1; i++) {
+        for (j = 0; j < col2; j++) {
+            printf("%f ", *(mat1 + i * col2 + j));
         }
         printf("\n");
     }
     printf("matrix2:\n");
-    for (i = 0; i < row1; i++)
-    {
-        for (j = 0; j < col2; j++)
-        {
-            printf("%d ", *(mat2 + i * col2 + j));
+    for (i = 0; i < row1; i++) {
+        for (j = 0; j < col2; j++) {
+            printf("%f ", *(mat2 + i * col2 + j));
         }
         printf("\n");
     }
-
-
 
 
 
@@ -80,7 +75,7 @@ int main() {
     {
         for (j = 0; j < col2; j++)
         {
-            printf("%d ", *(mat3 + i * col2 + j));
+            printf("%f ", *(mat3 + i * col2 + j));
         }
         printf("\n");
     }
