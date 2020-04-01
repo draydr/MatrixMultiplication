@@ -40,7 +40,6 @@ int main() {
     //allocate memory
     mat1 = (double*)malloc(row1 * col1 * sizeof(double));
     mat2 = (double*)malloc(row1 * col1 * sizeof(double));
-    mat3 = (double*)malloc(row1 * col2 * sizeof(double));
 
     incrVal = .03125;   //set the incrementing value for mat1
 
@@ -91,17 +90,17 @@ int main() {
     fp = fopen("Dray.csv", "w");
 
     //print name and info for file heading
-    fprintf(fp,"David Dray ~ COMP 233 B ~ Spring 2020\n");
+    fprintf(fp,"David Dray ~ COMP 233 B\n");
         //print each of the product matrix's elements
         for ( r = 0; r < row1; r++) {
             for (c = 0; c < col2; c++) {
-                fprintf(fp,"%f,", *(mat3 + r * col2 + c));
+                fprintf(fp,"%.3f,", *(mat3 + r * col2 + c));
             }
             fprintf(fp,"\n");
         }
         //print times each multiplication method took
-        fprintf(fp,"\nSerial multiplication time: %f\n", serialTime);
-        fprintf(fp,"Parallel multiplication time: %f\n", pTime);
+        fprintf(fp,"\nSerial multiplication time: %.3f\n", serialTime);
+        fprintf(fp,"Parallel multiplication time: %.3f\n", pTime);
 
     /* close the file*/
     fclose(fp);
@@ -141,8 +140,8 @@ double * multiply(int mat1Row, int mat1Col, double *mat1,
     *startTime = omp_get_wtime();       //start timing
 
     //loop through the columns of matrix 2 and the rows of matrix 1
-    for (c = 0; c < mat2Col; c++) {
-        for (r = 0; r < mat1Row; r++) {
+        for (c = 0; c < mat2Col; c++) {
+            for (r = 0; r < mat1Row; r++) {
             *(res+ r* mat2Col+c) = 0;   //set product's i,j element to 0
 
             //loop to get dot products for each i,j element
